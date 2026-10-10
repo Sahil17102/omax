@@ -4,7 +4,7 @@ const path = require("node:path");
 const bundlePath = path.resolve(__dirname, "../assets/index-BA4wyRB2.js");
 let source = fs.readFileSync(bundlePath, "utf8");
 
-const cmsLoader = `/* VIJAY_CMS */var __VIT_CMS__=await new Promise(o=>{let x=new XMLHttpRequest;x.open(\`GET\`,\`https://vijay-tours-admin.mittar963.chatgpt.site/api/public/bootstrap\`,!0),x.timeout=4e3,x.onload=()=>{try{o(x.status>=200&&x.status<300?JSON.parse(x.responseText):null)}catch{o(null)}},x.onerror=x.ontimeout=()=>o(null),x.send()});globalThis.__VIT_CMS__=__VIT_CMS__;`;
+const cmsLoader = `/* VIJAY_CMS */var __VIT_CMS__=await new Promise(o=>{let x=new XMLHttpRequest;x.open(\`GET\`,\`https://vijay-tours-admin.mittar963.chatgpt.site/api/public/bootstrap\`,!0),x.timeout=4e3,x.onload=()=>{try{o(x.status>=200&&x.status<300?JSON.parse(x.responseText):null)}catch{o(null)}},x.onerror=x.ontimeout=()=>o(null),x.send()});globalThis.__VIT_CMS__=__VIT_CMS__,document.documentElement.dataset.cmsTours=String(__VIT_CMS__?.tours?.length||0);`;
 source = source.replace(/^\/\* VIJAY_CMS \*\/var __VIT_CMS__=.*?globalThis\.__VIT_CMS__=__VIT_CMS__;/, cmsLoader);
 
 if (!source.startsWith("/* VIJAY_CMS */")) {
