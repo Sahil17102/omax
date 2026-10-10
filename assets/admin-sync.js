@@ -1,5 +1,14 @@
 (() => {
   const apiBase = "https://vijay-tours-admin.mittar963.chatgpt.site";
+  const postJson = (url, payload) => new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.timeout = 10000;
+    request.onload = () => request.status >= 200 && request.status < 300 ? resolve() : reject(new Error("Submission failed"));
+    request.onerror = request.ontimeout = () => reject(new Error("Submission failed"));
+    request.send(JSON.stringify(payload));
+  });
 
   document.addEventListener("submit", async (event) => {
     const form = event.target;
@@ -30,12 +39,7 @@
     };
 
     try {
-      const response = await fetch(`${apiBase}/api/public/enquiries`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error("Submission failed");
+      await postJson(`${apiBase}/api/public/enquiries`, payload);
       form.innerHTML = '<div class="form-success"><h3>Enquiry received</h3><p>Thank you. Your details are now with the Vijay India Tours team and they will contact you shortly.</p><button type="button" onclick="location.reload()">Send another enquiry</button></div>';
     } catch {
       if (button) {
