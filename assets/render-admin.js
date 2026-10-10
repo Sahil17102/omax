@@ -49,4 +49,7 @@ async function refreshData(message){state.data=await api();notify(message);rende
 async function removeResource(resource,id,label){if(!confirm(`Delete this ${label}? This cannot be undone.`))return;await api(`/manage?resource=${resource}&id=${encodeURIComponent(id)}`,{method:"DELETE"});await refreshData(`${label[0].toUpperCase()+label.slice(1)} deleted`)}
 async function moveGeneric(resource,id,direction,list){const index=list.findIndex(x=>x.id===id),other=list[index+direction];if(!other)return;const current=list[index],a=current.displayOrder,b=other.displayOrder;await Promise.all([saveResource(resource,{...current,displayOrder:b},true),saveResource(resource,{...other,displayOrder:a},true)]);await refreshData("Order updated")}
 
+const renderCurrenciesBase = renderCurrencies;
+renderCurrencies = function(view){renderCurrenciesBase(view);const helper=view.querySelector(".helper");if(helper)helper.textContent="Rate converts the tour base price from USD. Example: INR 95.98 and USD 1."};
+
 if(state.token)load();else login();
