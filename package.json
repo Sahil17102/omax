@@ -1,0 +1,11 @@
+{
+  "name": "vijay-india-tours-clone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pixel-accurate local clone of the Vijay India Tours website.",
+  "scripts": {
+    "build:seo": "node scripts/build-seo-assets.js",
+    "start": "node scripts/build-seo-assets.js && node server.js",
+    "test:seo": "node scripts/validate-seo.js"
+  }
+}
