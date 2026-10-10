@@ -3,7 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 
-const root = __dirname;
+const sourceRoot = __dirname;
+const root = process.env.STATIC_ROOT
+  ? path.resolve(sourceRoot, process.env.STATIC_ROOT)
+  : sourceRoot;
 const port = Number(process.env.PORT || 4173);
 const productionBaseUrl = (process.env.PUBLIC_BASE_URL || "https://omax-1ui5.onrender.com").replace(/\/$/, "");
 const indexTemplate = fs.readFileSync(path.join(root, "index.html"), "utf8");

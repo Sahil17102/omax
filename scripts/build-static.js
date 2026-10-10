@@ -11,6 +11,11 @@ if (path.dirname(dist) !== root || path.basename(dist) !== "dist") {
   throw new Error(`Refusing to replace unexpected output directory: ${dist}`);
 }
 
+execFileSync(process.execPath, [path.join(__dirname, "optimize-performance-assets.js")], {
+  cwd: root,
+  stdio: "inherit"
+});
+
 execFileSync(process.execPath, [path.join(__dirname, "build-seo-assets.js")], {
   cwd: root,
   env: { ...process.env, PUBLIC_BASE_URL: baseUrl },
@@ -18,8 +23,13 @@ execFileSync(process.execPath, [path.join(__dirname, "build-seo-assets.js")], {
 });
 
 const tours = JSON.parse(fs.readFileSync(path.join(root, "seo", "tours.json"), "utf8"));
+const appCss = fs.readFileSync(path.join(root, "assets", "index-B-HpPFcG.css"), "utf8");
 const template = fs.readFileSync(path.join(root, "index.html"), "utf8")
-  .replaceAll(defaultBaseUrl, baseUrl);
+  .replaceAll(defaultBaseUrl, baseUrl)
+  .replace(
+    '<link rel="stylesheet" crossorigin href="/assets/index-B-HpPFcG.css" />',
+    `<style id="app-css">${appCss}</style>`
+  );
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>\"]/g, (character) => ({
@@ -123,6 +133,7 @@ fs.cpSync(path.join(root, "assets"), path.join(dist, "assets"), { recursive: tru
 fs.cpSync(path.join(root, "seo"), path.join(dist, "seo"), { recursive: true });
 fs.copyFileSync(path.join(root, "robots.txt"), path.join(dist, "robots.txt"));
 fs.copyFileSync(path.join(root, "sitemap.xml"), path.join(dist, "sitemap.xml"));
+fs.copyFileSync(path.join(root, "_headers"), path.join(dist, "_headers"));
 fs.writeFileSync(
   path.join(dist, "index.html"),
   template.replace("<!-- SEO_ROUTE_DATA -->", `<script>window.__SEO_BASE_URL__=${safeJson(baseUrl)};</script>`)

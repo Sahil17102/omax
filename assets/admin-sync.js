@@ -1,5 +1,6 @@
 (() => {
-  const apiBase = "https://vijay-tours-admin.mittar963.chatgpt.site";
+  const apiBase = "https://omax-admin-control.pkmmittal97.chatgpt.site";
+  const navIds = ["international-trips", "india-trips", "india-tour-packages", "golden-triangle", "rajasthan", "tiger-safari", "food-tours"];
   const postJson = (url, payload) => new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open("POST", url, true);
@@ -9,6 +10,48 @@
     request.onerror = request.ontimeout = () => reject(new Error("Submission failed"));
     request.send(JSON.stringify(payload));
   });
+
+  function applyAdminControls(cms) {
+    if (!cms) return;
+    window.__VIT_CMS__ = cms;
+    try { sessionStorage.setItem("vit-cms", JSON.stringify(cms)); } catch {}
+    const nav = document.querySelector(".mainnav");
+    if (nav) {
+      const controlHash = JSON.stringify([cms.settings?.navigationItems || "", (cms.tours || []).filter(t => t.showInNavbar && t.published).map(t => [t.id,t.name])]);
+      if (nav.dataset.adminControlHash === controlHash) return;
+      nav.dataset.adminControlHash = controlHash;
+      const baseNodes = [...nav.children].filter(node => !node.classList.contains("mobile-enquire") && !node.classList.contains("cms-tour-nav"));
+      baseNodes.slice(0, navIds.length).forEach((node, index) => node.dataset.adminNavId = navIds[index]);
+      let items;
+      try { items = JSON.parse(cms.settings?.navigationItems || "null"); } catch {}
+      if (Array.isArray(items)) {
+        items.sort((a,b) => a.order-b.order).forEach(item => {
+          const node = nav.querySelector(`[data-admin-nav-id="${item.id}"]`);
+          if (!node) return;
+          node.hidden = item.visible === false;
+          const label = node.matches("a") ? node : node.querySelector("button");
+          if (label && node.matches("a")) label.textContent = item.label;
+          else if (label?.firstChild) label.firstChild.textContent = `${item.label} `;
+          nav.insertBefore(node, nav.querySelector(".mobile-enquire"));
+        });
+      }
+      nav.querySelectorAll(".cms-tour-nav").forEach(node => node.remove());
+      (cms.tours || []).filter(t => t.showInNavbar && t.published).forEach(tour => {
+        const link = document.createElement("a");
+        link.className = "cms-tour-nav";
+        link.href = `#tour/${tour.id}`;
+        link.textContent = tour.name;
+        nav.insertBefore(link, nav.querySelector(".mobile-enquire"));
+      });
+    }
+  }
+
+  fetch(`${apiBase}/api/public/bootstrap`).then(response => response.ok ? response.json() : null).then(cms => {
+    if (!cms) return;
+    applyAdminControls(cms);
+    const observer = new MutationObserver(() => applyAdminControls(cms));
+    observer.observe(document.getElementById("root"), { childList:true, subtree:true });
+  }).catch(() => {});
 
   document.addEventListener("submit", async (event) => {
     const form = event.target;
