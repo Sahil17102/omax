@@ -7,14 +7,14 @@ if (isAdminHost) {
   document.documentElement.classList.remove("admin-host");
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "/assets/render-admin.css?v=20261010-2";
+  stylesheet.href = "/assets/render-admin.css?v=20261010-3";
   document.head.append(stylesheet);
   document.title = "OMAX Admin | Website Control Centre";
   document.querySelector('meta[name="robots"]')?.setAttribute("content", "noindex, nofollow");
-  await import("/assets/render-admin.js?v=20261010-2");
+  await import("/assets/render-admin.js?v=20261010-3");
 } else {
   await Promise.all([
-    import("/assets/admin-sync.js?v=20261010-2"),
-    import("/assets/index-BA4wyRB2.js?v=20261010-6"),
+    import("/assets/admin-sync.js?v=20261010-3"),
+    import("/assets/index-BA4wyRB2.js?v=20261010-7"),
   ]);
 }
