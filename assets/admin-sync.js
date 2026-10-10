@@ -15,6 +15,12 @@
     if (!cms) return;
     window.__VIT_CMS__ = cms;
     try { sessionStorage.setItem("vit-cms", JSON.stringify(cms)); } catch {}
+    if (cms.settings?.siteName) document.title = `${cms.settings.siteName} — Private India & International Journeys`;
+    const whatsappNumber = String(cms.settings?.whatsapp || "").replace(/\D/g, "");
+    if (whatsappNumber) document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
+      const message = new URL(link.href).searchParams.get("text");
+      link.href = `https://wa.me/${whatsappNumber}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+    });
     const nav = document.querySelector(".mainnav");
     if (nav) {
       const controlHash = JSON.stringify([cms.settings?.navigationItems || "", (cms.tours || []).filter(t => t.showInNavbar && t.published).map(t => [t.id,t.name])]);

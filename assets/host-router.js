@@ -14,7 +14,7 @@ if (isAdminHost) {
   await import("/assets/render-admin.js?v=20261011-1");
 } else {
   await Promise.all([
-    import("/assets/admin-sync.js?v=20261011-2"),
-    import("/assets/index-BA4wyRB2.js?v=20261011-8"),
+    import("/assets/admin-sync.js?v=20261011-3"),
+    import("/assets/index-BA4wyRB2.js?v=20261011-9"),
   ]);
 }
