@@ -4,6 +4,7 @@
   "private": true,
   "description": "Pixel-accurate local clone of the Vijay India Tours website.",
   "scripts": {
+    "build": "node scripts/build-static.js",
     "build:seo": "node scripts/build-seo-assets.js",
     "start": "node scripts/build-seo-assets.js && node server.js",
     "test:seo": "node scripts/validate-seo.js"

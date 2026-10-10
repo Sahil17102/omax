@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const baseUrl = process.env.TEST_BASE_URL || "http://127.0.0.1:4173";
-const canonicalBase = (process.env.PUBLIC_BASE_URL || "https://travel-production-2054.up.railway.app").replace(/\/$/, "");
+const canonicalBase = (process.env.PUBLIC_BASE_URL || "https://omax-1ui5.onrender.com").replace(/\/$/, "");
 const tours = JSON.parse(fs.readFileSync("seo/tours.json", "utf8"));
 
 async function validate() {

@@ -1,5 +1,5 @@
 (() => {
-  const baseUrl = window.__SEO_BASE_URL__ || "https://travel-production-2054.up.railway.app";
+  const baseUrl = window.__SEO_BASE_URL__ || "https://omax-1ui5.onrender.com";
 
   const setMeta = (selector, attribute, value) => {
     const element = document.querySelector(selector);

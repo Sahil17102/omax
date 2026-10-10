@@ -21,4 +21,4 @@ npm run build:seo
 npm run test:seo
 ```
 
-Set `PUBLIC_BASE_URL` when the production domain changes so canonical URLs, structured data, and sitemap entries use the final domain.
+The default production URL is `https://omax-1ui5.onrender.com`. Set `PUBLIC_BASE_URL` if the production domain changes so canonical URLs, structured data, and sitemap entries use the final domain.

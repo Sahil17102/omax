@@ -5,10 +5,10 @@ const zlib = require("zlib");
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4173);
-const productionBaseUrl = (process.env.PUBLIC_BASE_URL || "https://travel-production-2054.up.railway.app").replace(/\/$/, "");
+const productionBaseUrl = (process.env.PUBLIC_BASE_URL || "https://omax-1ui5.onrender.com").replace(/\/$/, "");
 const indexTemplate = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const publicIndexTemplate = indexTemplate
-  .replaceAll("https://travel-production-2054.up.railway.app", productionBaseUrl)
+  .replaceAll("https://omax-1ui5.onrender.com", productionBaseUrl)
   .replace("<!-- SEO_ROUTE_DATA -->", `<script>window.__SEO_BASE_URL__=${JSON.stringify(productionBaseUrl)};</script>`);
 const tours = JSON.parse(fs.readFileSync(path.join(root, "seo", "tours.json"), "utf8"));
 const tourBySlug = new Map(tours.map((tour) => [tour.slug, tour]));

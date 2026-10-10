@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, "..");
 const bundlePath = path.join(root, "assets", "index-BA4wyRB2.js");
 const bundle = fs.readFileSync(bundlePath, "utf8");
 const tick = String.fromCharCode(96);
-const defaultBaseUrl = "https://travel-production-2054.up.railway.app";
+const defaultBaseUrl = "https://omax-1ui5.onrender.com";
 const baseUrl = (process.env.PUBLIC_BASE_URL || defaultBaseUrl).replace(/\/$/, "");
 
 function readEmbeddedJson(variableName) {
