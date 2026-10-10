@@ -1,6 +1,9 @@
 (() => {
   const apiBase = "https://omax-admin-control.pkmmittal97.chatgpt.site";
   const navIds = ["international-trips", "india-trips", "india-tour-packages", "golden-triangle", "rajasthan", "tiger-safari", "food-tours"];
+  const enquiryStyles = document.createElement("style");
+  enquiryStyles.textContent = ".form-success-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.form-success-actions button{border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer}.form-success-actions .whatsapp-after-submit{background:#168b52;color:#fff;border:0}.form-success-actions .send-another{background:#eef3f5;color:#12304e;border:0}";
+  document.head.append(enquiryStyles);
   const postJson = (url, payload) => new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open("POST", url, true);
@@ -69,7 +72,7 @@
     const original = button?.textContent || "Send enquiry";
     if (button) {
       button.disabled = true;
-      button.textContent = "Sending enquiry…";
+      button.textContent = "Sending enquiry...";
     }
 
     const fields = new FormData(form);
@@ -89,7 +92,40 @@
 
     try {
       await postJson(`${apiBase}/api/public/enquiries`, payload);
-      form.innerHTML = '<div class="form-success"><h3>Enquiry received</h3><p>Thank you. Your details are now with the Vijay India Tours team and they will contact you shortly.</p><button type="button" onclick="location.reload()">Send another enquiry</button></div>';
+      const success = document.createElement("div");
+      success.className = "form-success";
+      const heading = document.createElement("h3");
+      heading.textContent = "Enquiry sent to admin";
+      const copy = document.createElement("p");
+      copy.textContent = "Thank you. Your enquiry is saved in the admin inbox and the team will contact you shortly.";
+      const actions = document.createElement("div");
+      actions.className = "form-success-actions";
+      const whatsappNumber = String(window.__VIT_CMS__?.settings?.whatsapp || "").replace(/\D/g, "");
+      if (whatsappNumber) {
+        const whatsapp = document.createElement("button");
+        whatsapp.type = "button";
+        whatsapp.className = "whatsapp-after-submit";
+        whatsapp.textContent = "Continue on WhatsApp";
+        const message = [
+          `Hello ${window.__VIT_CMS__?.settings?.siteName || "OMAX"}, I have submitted an enquiry.`,
+          `Name: ${payload.name || ""}`,
+          `Phone: ${payload.phone || ""}`,
+          `Email: ${payload.email || "Not provided"}`,
+          `Travel date: ${payload.travelDate || "Flexible"}`,
+          `Trip: ${payload.tourName}`,
+          `Message: ${payload.message || "Please contact me."}`,
+        ].join("\n");
+        whatsapp.addEventListener("click", () => window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer"));
+        actions.append(whatsapp);
+      }
+      const another = document.createElement("button");
+      another.type = "button";
+      another.className = "send-another";
+      another.textContent = "Send another enquiry";
+      another.addEventListener("click", () => location.reload());
+      actions.append(another);
+      success.append(heading, copy, actions);
+      form.replaceChildren(success);
     } catch {
       if (button) {
         button.disabled = false;
