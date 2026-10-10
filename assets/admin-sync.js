@@ -46,7 +46,7 @@
     }
   }
 
-  fetch(`${apiBase}/api/public/bootstrap`).then(response => response.ok ? response.json() : null).then(cms => {
+  fetch(`${apiBase}/api/public/bootstrap?v=${Date.now()}`, { cache: "no-store" }).then(response => response.ok ? response.json() : null).then(cms => {
     if (!cms) return;
     applyAdminControls(cms);
     const observer = new MutationObserver(() => applyAdminControls(cms));
