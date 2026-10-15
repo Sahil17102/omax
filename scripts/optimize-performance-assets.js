@@ -33,6 +33,10 @@ bundle = bundle
   .replace(
     "(0,k.jsx)(`img`,{src:t.tour.image,alt:t.name})",
     "(0,k.jsx)(`img`,{src:t.tour.image,alt:t.name,loading:`lazy`,decoding:`async`})"
+  )
+  .replace(
+    "function Vt(e,t){if(!e)return`Price on request`;let n=t.currency===`INR`?Math.round(Number(e)*t.usdRate/100)*100:Number(e);return new Intl.NumberFormat(t.locale,{style:`currency`,currency:t.currency,maximumFractionDigits:0}).format(n)}",
+    "function Vt(e,t){if(!e)return`Price on request`;let n=t.currency===`INR`?Math.round(Number(e)*t.usdRate/100)*100:Number(e)*t.usdRate;return new Intl.NumberFormat(t.locale,{style:`currency`,currency:t.currency,maximumFractionDigits:0}).format(n)}"
   );
 
 if (!bundle.includes("/* CMS_CURRENCIES */")) {
