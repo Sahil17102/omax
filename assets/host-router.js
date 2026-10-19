@@ -17,5 +17,4 @@ if (isAdminHost) {
     import("/assets/admin-sync.js?v=20261011-4"),
     import("/assets/index-BA4wyRB2.js?v=20261011-10"),
   ]);
-  await import("/assets/destination-results.js?v=20261019-1");
 }

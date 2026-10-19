@@ -1,0 +1,16 @@
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+main > .hero { order: 1; }
+main > .trust-strip { order: 2; }
+main > .journey-showcase { order: 3; }
+main > .quick { order: 4; }
+main > .all-packages { order: 5; }
+main > #popular { order: 6; }
+main > .destination-section { order: 7; }
+main > .why { order: 8; }
+main > .moments { order: 9; }
+main > .reviews { order: 10; }
+main > .contact { order: 11; }
